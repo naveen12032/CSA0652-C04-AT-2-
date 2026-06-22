@@ -1,0 +1,48 @@
+#include <stdio.h>
+
+#define N 5
+#define DAMPING 0.85
+#define ITERATIONS 10
+
+int main() {
+    int graph[N][N] = {
+        {0,1,1,0,0},
+        {1,0,1,1,0},
+        {1,1,0,1,1},
+        {0,1,1,0,1},
+        {0,0,1,1,0}
+    };
+
+    double rank[N];
+    double newRank[N];
+
+    for(int i=0;i<N;i++)
+        rank[i]=1.0/N;
+
+    for(int k=0;k<ITERATIONS;k++) {
+        for(int i=0;i<N;i++) {
+            newRank[i]=(1-DAMPING)/N;
+
+            for(int j=0;j<N;j++) {
+                int outDegree=0;
+
+                for(int m=0;m<N;m++)
+                    if(graph[j][m])
+                        outDegree++;
+
+                if(graph[j][i])
+                    newRank[i]+=DAMPING*(rank[j]/outDegree);
+            }
+        }
+
+        for(int i=0;i<N;i++)
+            rank[i]=newRank[i];
+    }
+
+    printf("Course Rankings:\n");
+
+    for(int i=0;i<N;i++)
+        printf("Course %d = %.4f\n",i+1,rank[i]);
+
+    return 0;
+}
