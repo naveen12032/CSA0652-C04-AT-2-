@@ -1,0 +1,38 @@
+#include <stdio.h>
+#include <string.h>
+struct Disease {
+    char name[30];
+    char symptom[3][20];
+};
+int main() {
+    struct Disease diseases[3] = {
+        {"Flu", {"Fever","Cough","Headache"}},
+        {"Covid", {"Fever","Cough","Breathing"}},
+        {"Malaria", {"Fever","Chills","Sweating"}}
+    };
+    char patient[3][20]={"Fever","Cough","Headache"};
+    int maxScore=0;
+    int bestDisease=-1;
+    for(int i=0;i<3;i++) {
+        int score=0;
+        for(int j=0;j<3;j++) {
+            for(int k=0;k<3;k++) {
+                if(strcmp(patient[j],
+                          diseases[i].symptom[k])==0)
+                    score++;
+            }
+        }
+        if(score>maxScore) {
+            maxScore=score;
+            bestDisease=i;
+        }
+    }
+
+    printf("Most Probable Disease: %s\n",
+           diseases[bestDisease].name);
+
+    printf("Matching Score: %d\n",
+           maxScore);
+
+    return 0;
+}
